@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SafeCamera</string>
+    <string name="preferences_build_version">Build version</string>
+    <string name="preferences_build_time">" built "</string>
 </resources>

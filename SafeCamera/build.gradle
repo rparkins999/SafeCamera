@@ -12,6 +12,14 @@ def keystorePropertiesFile = rootProject.file("../Keys/keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
+def gitdata = new ByteArrayOutputStream()
+// change this line to /* if not using git
+exec {
+    commandLine "git", "--no-pager", "show", "--date=format:%H:%M:%S GMT%z %a %b %d %Y", "-s", "--format=from commit %H of %ad"
+    standardOutput = gitdata;
+}
+//*/
+
 android {
     namespace 'uk.co.yahoo.p1rpp.safecamera'
     compileSdk 32
@@ -31,6 +39,15 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            delete("build/intermediates/incremental/mergeReleaseResources/merger.xml")
+            resValue("string", 'build_time', "${(new Date()).format('HH:mm:ss \'GMT\'Z EEE dd MMM yyyy')}")
+            resValue("string", 'build_git', "${gitdata.toString()}")
+        }
+        debug {
+            minifyEnabled false
+            delete("build/intermediates/incremental/mergeDebugResources/merger.xml")
+            resValue("string", 'build_time', "${(new Date()).format('HH:mm:ss \'GMT\'Z EEE dd MMM yyyy')}")
+            resValue("string", 'build_git', "${gitdata.toString()}")
         }
     }
 

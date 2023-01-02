@@ -33,6 +33,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -96,7 +97,14 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         mSavedInstanceState = savedInstanceState;
+        ((TextView) findViewById(R.id.version)).setText(
+            getString(R.string.app_name)
+                .concat(getString(R.string.preferences_build_time))
+                .concat(getString(R.string.build_time)));
+        ((TextView) findViewById(R.id.committed)).setText(
+            getString(R.string.build_git));
         if (checkSelfPermission("android.permission.BLUETOOTH_CONNECT")
             == PackageManager.PERMISSION_GRANTED)
         {
